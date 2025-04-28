@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebGIS Lab 10</title>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.6/esri/css/main.css">
+    <script src="https://js.arcgis.com/4.6/"></script>
+    <style>
+      html, body, #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="viewDiv"></div>
+
+    <script>
+      require([
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/layers/FeatureLayer"
+      ], function(Map, MapView, FeatureLayer) {
+        
+        var map = new Map({
+          basemap: "streets"
+        });
+
+        var view = new MapView({
+          container: "viewDiv",
+          map: map,
+          center: [-96.3344, 30.6280],
+          zoom: 14
+        });
+
+        var popupTemplate = {
+          title: "Southside Parking Garage",
+          content: [{
+            type: "fields",
+            fieldInfos: [
+              {
+                fieldName: "Name",
+                label: "Southside Parking Garage"
+              },
+              {
+                fieldName: "ABBR",
+                label: "SOUTH"
+              }
+            ]
+          }]
+        };
+
+        var featureLayer = new FeatureLayer({
+          url: "https://services1.arcgis.com/qr14biwnHA6Vis6l/arcgis/rest/services/Building_Point_/FeatureServer/0",
+          popupTemplate: popupTemplate
+        });
+
+        map.add(featureLayer);
+
+      });
+    </script>
+  </body>
+</html>
